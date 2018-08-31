@@ -10,6 +10,7 @@
     <modules>
         <module>Jstorm-topIP-pro</module>
         <module>Jstorm-action-0203</module>
+        <module>Jstorm-httpsource-pro</module>
     </modules>
     <packaging>pom</packaging>
 
@@ -29,7 +30,7 @@
             <groupId>org.apache.storm</groupId>
             <artifactId>storm-core</artifactId>
             <version>1.1.0</version>
-            <scope>provided</scope>
+            <!--<scope>provided</scope>-->
         </dependency>
         <dependency>
             <groupId>org.apache.kafka</groupId>

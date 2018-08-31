@@ -16,16 +16,16 @@ import scala.actors.threadpool.Arrays;
 public class HopIPTopology {
     public static void main(String[] args) {
         //zookeeper的服务器地址
-        String zks = "192.168.1.222:2181";
+        String zks = "192.168.5.223:2181";
         //消息的topic
-        String topic = "mytopic";
+        String topic = "topip2";
         //strom在zookeeper上的根
-        String zkRoot = "/storm";
-        String id = "mytopic";
+        String zkRoot = "/strom";
+        String id = "topip2";
         BrokerHosts brokerHosts = new ZkHosts(zks);
         SpoutConfig spoutConfig = new SpoutConfig(brokerHosts, topic, zkRoot, id);
         spoutConfig.scheme = new SchemeAsMultiScheme(new StringScheme());
-        spoutConfig.zkServers = Arrays.asList(new String[]{"192.168.1.222"});
+        spoutConfig.zkServers = Arrays.asList(new String[]{"192.168.5.223"});
         spoutConfig.zkPort = 2181;
 
         TopologyBuilder builder = new TopologyBuilder();

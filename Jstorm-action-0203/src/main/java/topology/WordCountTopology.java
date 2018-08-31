@@ -17,7 +17,7 @@ import java.util.List;
 public class WordCountTopology {
     public static void main(String[] args) {
         //zookeeper的服务器地址
-        String zks = "192.168.1.222:2181";
+        String zks = "192.168.5.223:2181";
         //消息的topic
         String topic = "storm-sentence";
         //strom在zookeeper上的根
@@ -28,7 +28,7 @@ public class WordCountTopology {
         BrokerHosts brokerHosts = new ZkHosts(zks);
         SpoutConfig spoutConfig = new SpoutConfig(brokerHosts, topic, zkRoot, id);
         spoutConfig.scheme = new SchemeAsMultiScheme(new StringScheme());
-        spoutConfig.zkServers = Arrays.asList(new String[]{"192.168.1.222"});
+        spoutConfig.zkServers = Arrays.asList(new String[]{"192.168.5.223"});
         spoutConfig.zkPort = 2181;
 
         TopologyBuilder builder = new TopologyBuilder();
