@@ -60,11 +60,11 @@ public class WordCountBolt extends BaseRichBolt {
         }
         Connection conn = null;
         try {
-            conn = DriverManager
-                    .getConnection("jdbc:mysql://192.168.1.222:3306/databus",
-                            "root", "jinggo111");
+            conn = DriverManager.getConnection("jdbc:mysql://192.168.1.222:3306/storm",
+                            "hive", "jinggo111");
             this.connection = conn;
         } catch (SQLException e) {
+            e.printStackTrace();
             logger.error(e);
         }
         return conn;
