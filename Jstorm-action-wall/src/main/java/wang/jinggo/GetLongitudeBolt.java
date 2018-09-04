@@ -8,6 +8,7 @@ import org.apache.storm.topology.BasicOutputCollector;
 import org.apache.storm.topology.IBasicBolt;
 import org.apache.storm.topology.OutputFieldsDeclarer;
 import org.apache.storm.tuple.Fields;
+import org.apache.storm.tuple.MessageId;
 import org.apache.storm.tuple.Tuple;
 
 import java.io.BufferedReader;
@@ -34,16 +35,23 @@ public class GetLongitudeBolt implements IBasicBolt {
     static Connection conn;
     static Statement st;
 
-    private String uri = "hdfs://master:9000/storm/lng-lat-mapping.txt";
+    private String uri = "hdfs://192.168.1.222:9000/storm/lng-lat-mapping.txt";
 
     public static Connection getConnection() {
         Connection con = null; // get connection
         try {
             Class.forName("com.mysql.jdbc.Driver");// load Mysql driver
             con = DriverManager.getConnection(
-                    "jdbc:mysql://192.168.32.72:3306/test", "hadoop", "hadoop");
+                    "jdbc:mysql://192.168.1.222:3306/storm", "hive", "jinggo111");
         } catch (Exception e) {
             System.out.println("connect mysql failed! " + e.getMessage());
+            if(conn != null){
+                try {
+                    con.close();
+                } catch (SQLException e1) {
+                    e1.printStackTrace();
+                }
+            }
         }
         return con; // return connection
     }
@@ -51,7 +59,7 @@ public class GetLongitudeBolt implements IBasicBolt {
     public static void insert(String area, String jing, String wei) {
         conn = getConnection(); // get connection
         try {
-            String sql = "INSERT INTO position(area,lng,lat)" + " VALUES ('"
+            String sql = "INSERT INTO positions(area,lng,lat)" + " VALUES ('"
                     + area + "','" + jing + "','" + wei + "')";
             st = (Statement) conn.createStatement(); // create static sql statement
             st.executeUpdate(sql); // exec sql
@@ -89,8 +97,9 @@ public class GetLongitudeBolt implements IBasicBolt {
     }
 
     public void execute(Tuple tuple, BasicOutputCollector basicOutputCollector) {
-        String word = tuple.toString();
-
+    //    String word = tuple.toString();
+        String word = tuple.getStringByField("area");
+        System.out.println("GetBolt==========================>>>> " + longitude.get(word));
         if (longitude.get(word) != null) {
             insert(longitude.get(word).split("\t", -1)[0], longitude.get(word)
                     .split("\t", -1)[1], longitude.get(word).split("\t", -1)[2]);

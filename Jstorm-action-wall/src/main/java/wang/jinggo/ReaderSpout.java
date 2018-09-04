@@ -33,7 +33,7 @@ public class ReaderSpout extends BaseRichSpout {
     }
 
     public void nextTuple() {
-        String uri = "hdfs://master:9000/storm/m.txt";
+        String uri = "hdfs://192.168.1.222:9000/storm/m3.txt";
         InputStream in = null;
         try {
             Configuration conf = new Configuration();

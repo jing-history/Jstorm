@@ -26,27 +26,51 @@ public class GetAreaBolt implements IBasicBolt {
         try {
             Class.forName("com.mysql.jdbc.Driver");// load Mysql driver
             con = DriverManager.getConnection(
-                    "jdbc:mysql://192.168.32.72:3306/test", "hadoop", "hadoop");
+                    "jdbc:mysql://192.168.1.222:3306/storm", "hive", "jinggo111");
         } catch (Exception e) {
             System.out.println("Connection failed! " + e.getMessage());
         }
         return con;
-
     }
 
     public static String select(long ipp) {
         conn = getConnection(); // get connection
+        ResultSet rs = null;
         try {
             String sql = "select area from ip where '" + ipp
                     + "' between minip and maxip";
             st = conn.createStatement();
-            ResultSet rs = st.executeQuery(sql);
-            String name = rs.getString("area");
-            return name;
+            rs = st.executeQuery(sql);
+            String rname = "";
+            while(rs.next()){
+                rname = rs.getString("area");
+            }
+
+            return rname;
             // conn.close(); //close connection
         } catch (SQLException e) {
             System.out.println("failed! " + e.getMessage());
+            try {
+                conn.close();
+            } catch (SQLException e1) {
+                e1.printStackTrace();
+            }
             return null;
+        }finally {
+            if(rs != null){
+                try {
+                    rs.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+            if(conn != null){
+                try {
+                    conn.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
         }
 
     }
@@ -64,11 +88,13 @@ public class GetAreaBolt implements IBasicBolt {
         String line = tuple.toString();
         String all[] = line.split("\t", -1);
         long longIp = GetAreaBolt.ipToLong(all[3]);
+        System.out.println("longIp========================>>>" + longIp);
         collector.emit(new Values(select(longIp)));
     }
 
     public static long ipToLong(String strIp) {
         // transfer ip like 127.0.0.1 to decimal integer
+        //1413276006	18540852316	71-77-16-4c-41-b4:CMCC	10.116.136.202	alipay.com	支付	15	9	7161	4269	200
         long[] ip = new long[4];
         // find the position of dot
         int position1 = strIp.indexOf(".");
@@ -94,3 +120,7 @@ public class GetAreaBolt implements IBasicBolt {
         return null;
     }
 }
+
+
+
+
