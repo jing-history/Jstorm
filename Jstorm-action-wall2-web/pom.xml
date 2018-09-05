@@ -9,25 +9,20 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>Jstorm-action-wall-web</artifactId>
+    <artifactId>Jstorm-action-wall2-web</artifactId>
     <packaging>war</packaging>
 
-    <name>Jstorm-action-wall-web</name>
+    <name>Jstorm-action-wall2-web Maven Webapp</name>
     <!-- FIXME change it to the project's website -->
     <url>http://www.example.com</url>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.7</maven.compiler.source>
+        <maven.compiler.target>1.7</maven.compiler.target>
     </properties>
 
     <dependencies>
-        <dependency>
-            <groupId>org.apache.storm</groupId>
-            <artifactId>storm-core</artifactId>
-            <version>1.1.0</version>
-            <!--<scope>provided</scope>-->
-        </dependency>
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
@@ -40,7 +35,6 @@
             <version>2.1</version>
             <!--            <scope>provided</scope>-->
         </dependency>
-
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
@@ -50,7 +44,7 @@
     </dependencies>
 
     <build>
-        <finalName>Jstorm-action-wall-web</finalName>
+        <finalName>Jstorm-action-wall2-web</finalName>
         <pluginManagement><!-- lock down plugins versions to avoid using Maven defaults (may be moved to parent pom) -->
             <plugins>
                 <plugin>

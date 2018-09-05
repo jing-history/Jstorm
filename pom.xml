@@ -13,6 +13,7 @@
         <module>Jstorm-httpsource-pro</module>
         <module>Jstorm-action-wall</module>
         <module>Jstorm-action-wall-web</module>
+        <module>Jstorm-action-wall2-web</module>
     </modules>
     <packaging>pom</packaging>
 

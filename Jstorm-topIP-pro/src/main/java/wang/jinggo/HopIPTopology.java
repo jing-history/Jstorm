@@ -18,10 +18,10 @@ public class HopIPTopology {
         //zookeeper的服务器地址
         String zks = "192.168.5.223:2181";
         //消息的topic
-        String topic = "topip2";
+        String topic = "mytopip";
         //strom在zookeeper上的根
-        String zkRoot = "/strom";
-        String id = "topip2";
+        String zkRoot = "";
+        String id = "mytopip";
         BrokerHosts brokerHosts = new ZkHosts(zks);
         SpoutConfig spoutConfig = new SpoutConfig(brokerHosts, topic, zkRoot, id);
         spoutConfig.scheme = new SchemeAsMultiScheme(new StringScheme());

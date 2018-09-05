@@ -4,6 +4,7 @@ import wang.jinggo.domain.LatLngBean;
 import wang.jinggo.service.StormService;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -16,7 +17,7 @@ import java.util.List;
  * @description
  * @create 2018-09-02 16:55
  **/
-
+@WebServlet(urlPatterns = "/index.do")
 public class StormServlet extends HttpServlet {
 
     public void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -37,10 +38,10 @@ public class StormServlet extends HttpServlet {
 
     public void list(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-/*        StormService sto = new StormService();
+        StormService sto = new StormService();
         List<LatLngBean> list = sto.findAll();
 
-        request.setAttribute("StormList", list);*/
-        request.getRequestDispatcher("/home.jsp").forward(request, response);
+        request.setAttribute("StormList", list);
+        request.getRequestDispatcher("index.jsp").forward(request, response);
     }
 }
