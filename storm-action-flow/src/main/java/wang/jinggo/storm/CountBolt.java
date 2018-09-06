@@ -1,0 +1,88 @@
+package wang.jinggo.storm;
+
+import org.apache.storm.task.TopologyContext;
+import org.apache.storm.topology.BasicOutputCollector;
+import org.apache.storm.topology.OutputFieldsDeclarer;
+import org.apache.storm.topology.base.BaseBasicBolt;
+import org.apache.storm.tuple.Tuple;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * @author wangyj
+ * @description
+ * @create 2018-09-06 15:25
+ **/
+public class CountBolt extends BaseBasicBolt {
+
+    Integer id;
+    String name;
+
+    public PreparedStatement prepStatement;
+    private Connection connection;
+    private String url = "jdbc:mysql://192.168.29.32:3306/check_account";
+    private String password = "123456";
+    private String driver = "com.mysql.jdbc.Driver";
+    private String username = "zkpk";
+    private PreparedStatement st = null;
+
+    Map<String, Integer> counters;
+
+    public CountBolt() {
+    }
+
+    @Override
+    public void prepare(Map stormConf, TopologyContext context) {
+        this.counters = new HashMap<String, Integer>();
+        this.name = context.getThisComponentId();
+        this.id = context.getThisTaskId();
+    }
+
+    @Override
+    public void execute(Tuple input, BasicOutputCollector collector) {
+        try {
+            Class.forName(driver);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        try {
+            connection = DriverManager.getConnection(url, username, password);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        String str = input.getString(0);
+        System.out.println("Received: " + str);
+
+        try {
+            String[] all = str.split("\t", -1);
+            String uid = all[0];
+            String date = all[1];
+            int times = Integer.parseInt(all[2]);
+            int hour = Integer.parseInt(all[3]);
+            String tag = all[4];
+            String sql = "insert into abnormal_user(uid,date,times,hour,tag) values(?,?,?,?,?)";
+            st = connection.prepareStatement(sql);
+
+            st.setString(1, uid);
+            st.setString(2, date);
+            st.setInt(3, times);
+            st.setInt(4, hour);
+
+            st.setString(5, tag);
+            st.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void declareOutputFields(OutputFieldsDeclarer declarer) {
+
+    }
+}
